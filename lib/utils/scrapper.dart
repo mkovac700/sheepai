@@ -1,34 +1,41 @@
-import 'package:dart_web_scraper/dart_web_scraper.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-Future<Object> scrapeWebContent(String url) async {
-  final webScraper = WebScraper();
-  final result = await webScraper.scrape(
-    url: Uri.parse(url),
-    configMap: {
-      'default': [
-        Config(
-          parsers: {
-            'content': [
-              Parser(
-                id: 'html',
-                parent: ['_root'],
-                type: ParserType.element,
-                selector: ['html'],
-              ),
-            ],
-          },
-          urlTargets: [
-            UrlTarget(
-              name: 'default',
-              where: ['/'],
-            ),
-          ],
-        ),
-      ],
+Future<String> scrapeWebContent(String url) async {
+  const apiKey = '5231b2555074451fb3c833711f511404';
+  const apiUrl = 'https://api.zyte.com/v1/extract';
+
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${base64Encode(utf8.encode('$apiKey:'))}',
     },
-    configIndex: 0,
-    debug: true,
+    body: jsonEncode({
+      'url': url,
+      'article': true,
+      'customAttributes': {
+        'mainTitle': {
+          'type': 'string',
+          'description': 'The title of the page',
+        },
+        'mainShortDescription': {
+          'type': 'string',
+          'description': 'A short description of the page',
+        },
+        'lastUpdated': {
+          'type': 'string',
+          'description': 'The last updated time of the page',
+        }
+      }
+    }),
   );
 
-  return result['html'] ?? '';
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    final extractedData = data['customAttributes'] ?? {};
+    return jsonEncode(extractedData);
+  } else {
+    throw Exception('Failed to load web content: ${response.body}');
+  }
 }
