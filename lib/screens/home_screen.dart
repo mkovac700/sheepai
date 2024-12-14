@@ -99,7 +99,7 @@ class HomeScreenState extends State<HomeScreen> {
                 const Text(
                   'AI_',
                   style: TextStyle(
-                    color: Color(0xFF00FF00), // More fluorescent green color
+                    color: Color(0xFF93E4C5), // More fluorescent green color
                     fontWeight: FontWeight.bold, // Make the text bolder
                   ),
                 ),
