@@ -29,7 +29,8 @@ class HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      final data = await ChatGPTService().getResponse(url);
+      final data = await ChatGPTService()
+          .getResponse(url: url, language: selectedValue ?? 'English');
       if (!isLoading) return; // Exit if loading was cancelled
       setState(() {
         mainTitle = data['mainTitle'];
@@ -94,15 +95,18 @@ class HomeScreenState extends State<HomeScreen> {
               children: [
                 UrlInputField(onSubmitted: fetchData),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom:8.0), // Apply padding around the DropdownButtonFormField
+                  padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom:
+                          8.0), // Apply padding around the DropdownButtonFormField
                   child: DropdownButtonFormField<String>(
                     value: selectedValue,
                     hint: const Padding(
-                      padding: EdgeInsets.only(left: 8.0), // Apply left padding to the hint text
+                      padding: EdgeInsets.only(
+                          left: 8.0), // Apply left padding to the hint text
                       child: Text('Select language'),
                     ),
-                    items: <String>['English', 'Croatian']
-                        .map((String value) {
+                    items: <String>['English', 'Croatian'].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -117,14 +121,18 @@ class HomeScreenState extends State<HomeScreen> {
                       color: Colors.blue, // Change text color
                       fontSize: 16, // Change font size
                     ),
-                    dropdownColor: Colors.grey[200], // Change dropdown background color
+                    dropdownColor:
+                        Colors.grey[200], // Change dropdown background color
                     decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 8.0), // Apply left padding to the content
+                      contentPadding: EdgeInsets.only(
+                          left: 8.0), // Apply left padding to the content
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent), // Remove underline
+                        borderSide: BorderSide(
+                            color: Colors.transparent), // Remove underline
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent), // Remove underline
+                        borderSide: BorderSide(
+                            color: Colors.transparent), // Remove underline
                       ),
                     ),
                     icon: const Icon(
@@ -155,27 +163,31 @@ class HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 20),
                       for (var table in tables)
                         if (table['columns'] != null)
-                          Container(
-                            width: double.infinity, // Make the width equal
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[800], // Darker blue color
-                              borderRadius: BorderRadius.circular(
-                                  12.0), // Ensure rounded corners
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: TableWidget(
-                              headline: table['headline'] ?? 'No Headline',
-                              columns: (table['columns'] as List)
-                                  .map((column) => List<String>.from(column))
-                                  .toList(),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 20.0), // Add padding between tables
+                            child: Container(
+                              width: double.infinity, // Make the width equal
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.blue[800], // Darker blue color
+                                borderRadius: BorderRadius.circular(
+                                    12.0), // Ensure rounded corners
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: TableWidget(
+                                headline: table['headline'] ?? 'No Headline',
+                                columns: (table['columns'] as List)
+                                    .map((column) => List<String>.from(column))
+                                    .toList(),
+                              ),
                             ),
                           ),
                       const SizedBox(height: 20),

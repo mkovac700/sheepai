@@ -9,7 +9,8 @@ class ChatGPTService {
       "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";
   final String apiUrl = "https://api.openai.com/v1/chat/completions";
 
-  Future<Map<String, dynamic>> getResponse(String url) async {
+  Future<Map<String, dynamic>> getResponse(
+      {required String url, required String language}) async {
     final String scrappedContent = await scrapeWebContent(url);
     final Map<String, dynamic> scrappedData = jsonDecode(scrappedContent);
     final String articleContent = scrappedData['content'] ?? '';
@@ -26,6 +27,7 @@ class ChatGPTService {
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
     List<List<String>> columns; Give output following example below, you can give multiple tables in the output.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
+    Content should be in $language language.
     {
     "mainTitle": "title - max 5 words",
     "mainShortDescription": "max 5 sentences page description",
