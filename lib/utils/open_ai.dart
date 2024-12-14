@@ -28,6 +28,7 @@ class ChatGPTService {
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
     List<List<String>> columns, and a HeadlineWithDescription widget which accepts a String headline and a String description.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
+    The first column should be the header of the table.
     You can give many tables and many headlines with descriptions in the output. As much as you can.
     Give structured output following JSON example below. You can add more tables. Everything data type inside headline or table should be String.
     {

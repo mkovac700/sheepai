@@ -23,47 +23,24 @@ class TableWidget extends StatelessWidget {
         Table(
           border: TableBorder.all(color: Colors.black),
           children: [
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              ),
-              children: [
-                for (var column in columns)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(column[0],
-                        style: const TextStyle(color: Colors.black)),
-                  ),
-              ],
-            ),
-            for (int i = 1; i < columns[0].length - 1; i++)
+            for (int i = 0; i < columns[0].length; i++)
               TableRow(
                 decoration: const BoxDecoration(color: Colors.white),
                 children: [
-                  for (var column in columns)
+                  for (int j = 0; j < columns.length; j++)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(column[i],
-                          style: const TextStyle(color: Colors.black)),
+                      child: Text(
+                        columns[j][i],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight:
+                              j == 0 ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
                     ),
                 ],
               ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(10)),
-              ),
-              children: [
-                for (var column in columns)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(column[column.length - 1],
-                        style: const TextStyle(color: Colors.black)),
-                  ),
-              ],
-            ),
           ],
         ),
       ],
