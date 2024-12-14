@@ -4,7 +4,6 @@ import 'package:chatgpt_test/widgets/title.dart';
 import 'package:flutter/material.dart';
 import '../widgets/table.dart';
 import '../widgets/headline_with_description.dart';
-import '../data/dummy_text.dart';
 import '../utils/helper.dart';
 import '../widgets/url_input.dart';
 
@@ -22,6 +21,7 @@ class HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   List<Map<String, dynamic>> tables = [];
   String? selectedValue;
+  List<Map<String, dynamic>> headlinesWithDescriptions = [];
 
   void fetchData(String url) async {
     setState(() {
@@ -37,6 +37,9 @@ class HomeScreenState extends State<HomeScreen> {
         mainShortDescription = data['mainShortDescription'];
         lastUpdated = data['lastUpdated'];
         tables = (data['tables'] as List)
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+        headlinesWithDescriptions = (data['headlinesWithDescriptions'] as List)
             .map((e) => Map<String, dynamic>.from(e))
             .toList();
       });
@@ -153,26 +156,17 @@ class HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: double.infinity, // Make the width equal
-                        child: HeadlineWithDescription(
-                          mainHeadline: mainTitle,
-                          description: overviewText,
-                        ),
-                      ),
                       const SizedBox(height: 20),
-                      for (var table in tables)
-                        if (table['columns'] != null)
+                      for (var i = 0; i < tables.length; i++) ...[
+                        if (tables[i]['columns'] != null)
                           Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0), // Add padding between tables
+                            padding: const EdgeInsets.only(bottom: 20.0),
                             child: Container(
-                              width: double.infinity, // Make the width equal
+                              width: double.infinity,
                               padding: const EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
-                                color: Colors.blue[800], // Darker blue color
-                                borderRadius: BorderRadius.circular(
-                                    12.0), // Ensure rounded corners
+                                color: Colors.blue[800],
+                                borderRadius: BorderRadius.circular(12.0),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
@@ -183,21 +177,25 @@ class HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               child: TableWidget(
-                                headline: table['headline'] ?? 'No Headline',
-                                columns: (table['columns'] as List)
+                                headline:
+                                    tables[i]['headline'] ?? 'No Headline',
+                                columns: (tables[i]['columns'] as List)
                                     .map((column) => List<String>.from(column))
                                     .toList(),
                               ),
                             ),
                           ),
-                      const SizedBox(height: 20),
-                      const SizedBox(
-                        width: double.infinity, // Make the width equal
-                        child: HeadlineWithDescription(
-                          mainHeadline: detailsTitle,
-                          description: detailsText,
-                        ),
-                      ),
+                        if (i < headlinesWithDescriptions.length)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: HeadlineWithDescription(
+                              mainHeadline: headlinesWithDescriptions[i]
+                                  ['headline'],
+                              description: headlinesWithDescriptions[i]
+                                  ['description'],
+                            ),
+                          ),
+                      ],
                       const SizedBox(height: 20),
                       const HeadlineText(text: 'Welcome to SheepAI'),
                       const SizedBox(height: 8),

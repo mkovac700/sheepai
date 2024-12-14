@@ -25,7 +25,8 @@ class ChatGPTService {
     final String prompt = """
     Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
-    List<List<String>> columns; Give output following example below, you can give multiple tables in the output.
+    List<List<String>> columns, and a HeadlineWithDescription widget which accepts a String headline and a String description.
+    Give output following example below, you can give multiple tables and headlines with descriptions in the output.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
     Content should be in $language language.
     {
@@ -39,6 +40,11 @@ class ChatGPTService {
         ["Last Name", "Doe", "Smith"],
         ["Age", "30", "25"]
       ]
+    },
+    "headlineWithDescription1": {
+      "headline": "Example Headline",
+      "description": "This is an example description."
+    }
     }
     $chunk
     """;
@@ -53,7 +59,7 @@ class ChatGPTService {
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $apiKey',
       },
       body: jsonEncode({
@@ -63,7 +69,7 @@ class ChatGPTService {
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
       final content = jsonDecode(data['choices'][0]['message']['content']);
       final contentMap = content is List
           ? {for (var i = 0; i < content.length; i++) i.toString(): content[i]}
@@ -78,6 +84,13 @@ class ChatGPTService {
             .map((key) => {
                   'headline': contentMap[key]['headline'],
                   'columns': contentMap[key]['columns'],
+                })
+            .toList(),
+        'headlinesWithDescriptions': contentMap.keys
+            .where((key) => key.startsWith('headlineWithDescription'))
+            .map((key) => {
+                  'headline': contentMap[key]['headline'],
+                  'description': contentMap[key]['description'],
                 })
             .toList(),
       };
