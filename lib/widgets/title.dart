@@ -4,12 +4,16 @@ class TitleWidget extends StatelessWidget {
   final String mainTitle;
   final String lastUpdate;
   final String mainShortDescription;
+  final String imgUrl;
+  final bool showImg;
 
   const TitleWidget({
     super.key,
     required this.mainTitle,
     required this.lastUpdate,
     required this.mainShortDescription,
+    required this.imgUrl,
+    required this.showImg,
   });
 
   @override
@@ -29,6 +33,13 @@ class TitleWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          if(showImg)
+            Image.network(
+              imgUrl,
+              //width: double.infinity,
+              //height: 200,
+              fit: BoxFit.cover,
+            ),
           Text(
             mainTitle,
             style: const TextStyle(
