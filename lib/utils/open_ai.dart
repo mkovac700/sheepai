@@ -24,30 +24,32 @@ class ChatGPTService {
     print(chunk);
     final String prompt = """
     Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
+    Content should be in $language language.
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
     List<List<String>> columns, and a HeadlineWithDescription widget which accepts a String headline and a String description.
-    Give structured output following JSON example below.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
-    Make sure to structure every content you are given.
     You can give many tables and many headlines with descriptions in the output. As much as you can.
-    Content should be in $language language.
+    Give structured output following JSON example below. You can add more tables. Everything data type inside headline or table should be String.
     {
-    "mainTitle": "title - max 5 words",
-    "mainShortDescription": "max 5 sentences page description",
-    "lastUpdated": "example 2022-01-01",
-    "table1": {
-      "headline": "Example Table",
-      "columns": [
-        ["First Name", "John", "Jane"],
-        ["Last Name", "Doe", "Smith"],
-        ["Age", "30", "25"]
-      ]
-    },
-    "headlineWithDescription1": {
-      "headline": "Example Headline",
-      "description": "This is an example description."
+      "mainTitle": "title - max 5 words",
+      "mainShortDescription": "max 5 sentences page description",
+      "lastUpdated": "example 2022-01-01",
+      "tables": [
+        {
+          "headline": "Example Table",
+          "columns": [
+            ["First Name", "John", "Jane"],
+            ["Last Name", "Doe", "Smith"],
+            ["Age", "30", "25"]
+          ]
+        }
+      ],
+      "headlineWithDescription1": {
+        "headline": "Example Headline",
+        "description": "This is an example description."
+      }
     }
-    }
+
     $chunk
     """;
 
@@ -81,11 +83,10 @@ class ChatGPTService {
         'mainTitle': contentMap['mainTitle'] ?? '',
         'mainShortDescription': contentMap['mainShortDescription'] ?? '',
         'lastUpdated': contentMap['lastUpdated'] ?? '',
-        'tables': contentMap.keys
-            .where((key) => key.startsWith('table'))
-            .map((key) => {
-                  'headline': contentMap[key]['headline'],
-                  'columns': contentMap[key]['columns'],
+        'tables': (contentMap['tables'] as List)
+            .map((table) => {
+                  'headline': table['headline'],
+                  'columns': table['columns'],
                 })
             .toList(),
         'headlinesWithDescriptions': contentMap.keys

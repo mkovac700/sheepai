@@ -87,10 +87,12 @@ class HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.bold, // Make the text bolder
                   ),
                 ),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: UrlInputField(onSubmitted: fetchData),
-                ),),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: UrlInputField(onSubmitted: fetchData),
+                  ),
+                ),
                 DropdownButton<String>(
                   value: selectedValue,
                   hint: const Padding(

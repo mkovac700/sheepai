@@ -46,16 +46,18 @@ class TitleWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.bottomLeft, // Changed alignment to bottom left
-            child: Text(
-              lastUpdate,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.white70,
+          if (lastUpdate != '') // Added a check for lastUpdate
+            Align(
+              alignment:
+                  Alignment.bottomLeft, // Changed alignment to bottom left
+              child: Text(
+                'Last updated: $lastUpdate',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white70,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
