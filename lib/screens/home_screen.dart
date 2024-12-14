@@ -5,6 +5,7 @@ import '../widgets/table.dart';
 import '../widgets/headline_with_description.dart';
 import '../data/dummy_text.dart';
 import '../utils/helper.dart';
+import '../widgets/url_input.dart'; // Add this import
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -42,6 +43,8 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const UrlInputField(),
+            const SizedBox(height: 20),
             const TitleWidget(
               mainHeadline: headline,
               lastUpdate: lastUpdated,
@@ -104,6 +107,23 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UrlInputField extends StatelessWidget {
+  const UrlInputField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: const InputDecoration(
+        labelText: 'Enter URL',
+        border: OutlineInputBorder(),
+      ),
+      onSubmitted: (url) {
+        launchURL(context, url);
+      },
     );
   }
 }
