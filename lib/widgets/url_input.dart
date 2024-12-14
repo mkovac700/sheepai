@@ -12,6 +12,9 @@ class UrlInputField extends StatelessWidget {
         hintText: 'Enter URL',
         border: OutlineInputBorder(),
       ),
+      style: const TextStyle(
+        color: Colors.white, // Change text color here
+      ),
       onSubmitted: onSubmitted,
     );
   }

@@ -15,8 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  String mainTitle = '';
-  String mainShortDescription = 'Enter URL';
+  String mainTitle = 'SheepAI Prototype Application';
+  String mainShortDescription = 'Please provide URL to fetch data';
   String lastUpdated = '';
   bool isLoading = false;
   List<Map<String, dynamic>> tables = [];
@@ -185,12 +185,14 @@ class HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                       ],
-                      const SizedBox(height: 20),
+                      /*const SizedBox(height: 20),
                       const HeadlineText(text: 'Welcome to SheepAI'),
                       const SizedBox(height: 8),
                       const DescriptionText(
                           text:
                               'This is a description of the SheepAI application.'),
+
+                       */
                       // ...additional widgets or content...
                     ],
                   ),
@@ -209,7 +211,7 @@ class HomeScreenState extends State<HomeScreen> {
                       return Dialog(
                         backgroundColor: Colors.black54,
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(56.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

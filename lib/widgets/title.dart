@@ -27,7 +27,7 @@ class TitleWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0), // Ensure rounded corners
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             mainTitle,
