@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:chatgpt_test/utils/toast.dart'; // Import the ToastMessage class
-import 'package:fluttertoast/fluttertoast.dart'; // Ensure the fluttertoast plugin is properly initialized
 
 // OPEN-URL OR LAUNCH TELEPHONE APP
 void launchURL(BuildContext context, String uri) async {

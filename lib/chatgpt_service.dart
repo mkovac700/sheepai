@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
 
 class ChatGPTService {
   final String apiKey;
-  final String apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+  final String apiUrl =
+      'https://api.openai.com/v1/engines/davinci-codex/completions';
 
   ChatGPTService(this.apiKey);
 
