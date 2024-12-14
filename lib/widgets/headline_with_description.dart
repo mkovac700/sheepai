@@ -14,7 +14,9 @@ class HeadlineWithDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
+      width: double.infinity,
       decoration: BoxDecoration(
+
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
