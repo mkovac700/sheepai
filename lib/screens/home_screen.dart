@@ -107,7 +107,7 @@ class HomeScreenState extends State<HomeScreen> {
                 const Text(
                   'AI_',
                   style: TextStyle(
-                    color: Color(0xFF00FF00), // More fluorescent green color
+                    color: Color(0xFF93E4C5), // More fluorescent green color
                     fontWeight: FontWeight.bold, // Make the text bolder
                   ),
                 ),
@@ -124,7 +124,7 @@ class HomeScreenState extends State<HomeScreen> {
                         left: 8.0), // Apply left padding to the hint text
                     child: Text('English'),
                   ),
-                  items: <String>['English', 'Croatian'].map((String value) {
+                  items: <String>['English', 'Croatian', 'Ukrainian', 'Russian', 'Spanish', 'Serbian', 'Czech', 'Hungarian', 'Chinese', 'Korean', 'Japanese'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
