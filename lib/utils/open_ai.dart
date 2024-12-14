@@ -21,12 +21,15 @@ class ChatGPTService {
 
     final String chunk = articleContent.substring(
         0, articleContent.length > 100000 ? 100000 : articleContent.length);
+    print(chunk);
     final String prompt = """
     Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
     List<List<String>> columns, and a HeadlineWithDescription widget which accepts a String headline and a String description.
-    Give output following example below, you can give multiple tables and headlines with descriptions in the output.
+    Give structured output following JSON example below.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
+    Make sure to structure every content you are given.
+    You can give many tables and many headlines with descriptions in the output. As much as you can.
     Content should be in $language language.
     {
     "mainTitle": "title - max 5 words",
