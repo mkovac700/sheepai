@@ -29,6 +29,7 @@ class ChatGPTService {
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
     The first column should be the header of the table.
     You can give many tables, many headlines with descriptions, and many charts in the output. As much as you can.
+    The headlineWithDescription1 field should have description with minimum 5 sentences.
     Give structured output following JSON example below. You can add more tables and charts.
     Every data type inside headline or table should be String, only charts can accept integer.
     Provide as much tables and charts as posssible.
