@@ -9,7 +9,7 @@ class UrlInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: const InputDecoration(
-        labelText: 'Enter URL',
+        hintText: 'Enter URL',
         border: OutlineInputBorder(),
       ),
       onSubmitted: onSubmitted,
