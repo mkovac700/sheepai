@@ -116,7 +116,7 @@ class HomeScreenState extends State<HomeScreen> {
                         left: 8.0), // Apply left padding to the hint text
                     child: Text('English'),
                   ),
-                  items: <String>['English', 'Croatian'].map((String value) {
+                  items: <String>['English', 'Croatian', 'Ukrainian', 'Russian', 'Spanish', 'Serbian', 'Czech', 'Hungarian', 'Chinese', 'Korean', 'Japanese'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
