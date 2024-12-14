@@ -19,22 +19,26 @@ class TableWidget extends StatelessWidget {
       children: [
         Text(
           headline,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 10),
         Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(color: Colors.black),
           children: [
-            for (int i = 0; i < column1.length; i++)
+            for (int i = 1; i < column1.length; i++)
               TableRow(
+                decoration: const BoxDecoration(color: Colors.white),
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(column1[i]),
+                    child: Text(column1[i],
+                        style: const TextStyle(color: Colors.black)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(column2[i]),
+                    child: Text(column2[i],
+                        style: const TextStyle(color: Colors.black)),
                   ),
                 ],
               ),
