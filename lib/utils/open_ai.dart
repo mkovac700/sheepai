@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:chatgpt_test/data/dummy_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'scrapper.dart';
@@ -14,28 +15,38 @@ class ChatGPTService {
   // ChatGPTService(this.apiKey);
 
   Future<Map<String, dynamic>> getResponse(String url) async {
-    final String content = await scrapeWebContent(url);
-
+    final String scrappedContent = await scrapeWebContent(url);
+    final Map<String, dynamic> scrappedData =
+        jsonDecode(scrappedContent)['values'];
     // Split content into smaller chunks to avoid exceeding token limit
     const int chunkSize = 5000; // Adjust chunk size to avoid rate limit
     final List<String> chunks = [];
-    for (int i = 0; i < content.length; i += chunkSize) {
-      chunks.add(content.substring(
-          i, i + chunkSize > content.length ? content.length : i + chunkSize));
+    for (int i = 0; i < scrappedContent.length; i += chunkSize) {
+      chunks.add(scrappedContent.substring(
+          i,
+          i + chunkSize > scrappedContent.length
+              ? scrappedContent.length
+              : i + chunkSize));
     }
 
     final Map<String, dynamic> result = {};
     for (var chunk in chunks) {
       if (!isLoading) return {}; // Exit if loading was cancelled
-      print('Processing chunk: $chunk');
       final String prompt = """
-      Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content:
-      in JSON FORMAT below, fill in the following fields on left side with the content from the page:
+      Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
+      Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
+      List<List<String>> columns; Give output following example below, you can give multiple tables in the output.
+      Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
       {
-        "mainTitle": "String (4 words max, analyze the content and provide a title)",
-        "mainShortDescription": "String (short description of the page, max 4 sentences)",
-        "lastUpdated": "String (when was the content last updated, set 'unknown' if not available)"
+      "table1": {
+        "headline": "Example Table",
+        "columns": [
+          ["First Name", "John", "Jane"],
+          ["Last Name", "Doe", "Smith"],
+          ["Age", "30", "25"]
+        ]
       }
+    }
       $chunk
       """;
 
@@ -60,7 +71,6 @@ class ChatGPTService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        debugPrint(data.toString());
         final content = jsonDecode(data['choices'][0]['message']['content']);
         result.addAll(content);
       } else if (response.statusCode == 429) {
@@ -76,11 +86,12 @@ class ChatGPTService {
         throw Exception('Failed to load response: ${response.body}');
       }
     }
-
     return {
-      'mainTitle': result['mainTitle'] ?? '',
-      'mainShortDescription': result['mainShortDescription'] ?? '',
-      'lastUpdated': result['lastUpdated'] ?? 'unknown',
+      'mainTitle': scrappedData['mainTitle'] ?? 'No Title',
+      'mainShortDescription':
+          scrappedData['mainShortDescription'] ?? 'No Description',
+      'lastUpdated': scrappedData['lastUpdated'] ?? 'Unknown',
+      'tables': result.isNotEmpty ? result : {},
     };
   }
 }

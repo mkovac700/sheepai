@@ -20,6 +20,7 @@ class HomeScreenState extends State<HomeScreen> {
   String mainShortDescription = '';
   String lastUpdated = '';
   bool isLoading = false;
+  List<Map<String, dynamic>> tables = [];
 
   void fetchData(String url) async {
     setState(() {
@@ -33,6 +34,10 @@ class HomeScreenState extends State<HomeScreen> {
         mainTitle = data['mainTitle'];
         mainShortDescription = data['mainShortDescription'];
         lastUpdated = data['lastUpdated'];
+        tables = (data['tables'] as Map<String, dynamic>)
+            .values
+            .map((e) => e as Map<String, dynamic>)
+            .toList();
       });
     } catch (e) {
       if (isLoading) {
@@ -108,28 +113,31 @@ class HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        width: double.infinity, // Make the width equal
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[800], // Darker blue color
-                          borderRadius: BorderRadius.circular(
-                              12.0), // Ensure rounded corners
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
+                      for (var table in tables)
+                        if (table['columns'] != null)
+                          Container(
+                            width: double.infinity, // Make the width equal
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[800], // Darker blue color
+                              borderRadius: BorderRadius.circular(
+                                  12.0), // Ensure rounded corners
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: const TableWidget(
-                          headline: keyEntitiesTitle,
-                          column1: column1,
-                          column2: column2,
-                        ),
-                      ),
+                            child: TableWidget(
+                              headline: table['headline'] ?? 'No Headline',
+                              columns: (table['columns'] as List)
+                                  .map((column) => List<String>.from(column))
+                                  .toList(),
+                            ),
+                          ),
                       const SizedBox(height: 20),
                       const SizedBox(
                         width: double.infinity, // Make the width equal

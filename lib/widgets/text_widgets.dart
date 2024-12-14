@@ -40,8 +40,3 @@ class DescriptionText extends StatelessWidget {
     );
   }
 }
-
-// Dummy text to be used inside text_widgets
-const String dummyHeadline = 'Dummy Headline';
-const String dummyDescription =
-    'This is a dummy description text for testing purposes.';

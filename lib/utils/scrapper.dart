@@ -21,12 +21,17 @@ Future<String> scrapeWebContent(String url) async {
         },
         'mainShortDescription': {
           'type': 'string',
-          'description': 'A short description of the page',
+          'description':
+              'A short description of the page, must differ from the mainTitle',
         },
         'lastUpdated': {
           'type': 'string',
           'description': 'The last updated time of the page',
-        }
+        },
+        'pageContent': {
+          'type': 'string',
+          'description': 'Whole content of the page',
+        },
       }
     }),
   );
@@ -34,6 +39,7 @@ Future<String> scrapeWebContent(String url) async {
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
     final extractedData = data['customAttributes'] ?? {};
+    // Correctly print mainTitle
     return jsonEncode(extractedData);
   } else {
     throw Exception('Failed to load web content: ${response.body}');
