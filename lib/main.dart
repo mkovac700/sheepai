@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'chatgpt_service.dart';
 
-void main() {
+void main() async {
+  //await dotenv.load(fileName: "../.env");
   runApp(const MyApp());
 }
 
@@ -68,6 +71,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  final TextEditingController _controller = TextEditingController();
+  final ChatGPTService _chatGPTService = ChatGPTService();
+  String _response = '';
+
+  void _getChatGPTResponse() async {
+    final response = await _chatGPTService.getResponse(_controller.text);
+    setState(() {
+      _response = response;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -112,6 +126,21 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+          TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+              labelText: 'Enter your prompt',
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: _getChatGPTResponse,
+            child: const Text('Get Response'),
+          ),
+          const SizedBox(height: 16),
+          Text(_response),
+
+
           ],
         ),
       ),
