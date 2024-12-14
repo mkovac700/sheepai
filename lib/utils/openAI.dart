@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:dart_web_scraper/dart_web_scraper.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'scrapper.dart';
 
 class ChatGPTService {
   // final String apiKey = dotenv.env['API_KEY']!;
@@ -13,36 +13,7 @@ class ChatGPTService {
   // ChatGPTService(this.apiKey);
 
   Future<Map<String, dynamic>> getResponse(String url) async {
-    final webScraper = WebScraper();
-    final result = await webScraper.scrape(
-      url: Uri.parse(url),
-      configMap: {
-        'default': [
-          Config(
-            parsers: {
-              'content': [
-                Parser(
-                  id: 'html',
-                  parent: ['_root'],
-                  type: ParserType.element,
-                  selector: ['html'],
-                ),
-              ],
-            },
-            urlTargets: [
-              UrlTarget(
-                name: 'default',
-                where: ['/'],
-              ),
-            ],
-          ),
-        ],
-      },
-      configIndex: 0,
-      debug: true,
-    );
-
-    final Object content = result['html'] ?? '';
+    final Object content = await scrapeWebContent(url);
 
     final String prompt = """
     Your task is to process the following content and extract the following structured data:
