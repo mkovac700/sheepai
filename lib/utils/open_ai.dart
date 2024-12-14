@@ -26,11 +26,13 @@ class ChatGPTService {
     Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
     Content should be in $language language.
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
-    List<List<String>> columns, and a HeadlineWithDescription widget which accepts a String headline and a String description.
+    List<List<String>> columns, a HeadlineWithDescription widget which accepts a String headline and a String description, and a Chart widget which accepts a String headline and List<Map<String, dynamic>> data.
     Total number of rows in each column must be equal. It is up to you to decide how many rows you want to show in the table.
     The first column should be the header of the table.
-    You can give many tables and many headlines with descriptions in the output. As much as you can.
-    Give structured output following JSON example below. You can add more tables. Everything data type inside headline or table should be String.
+    You can give many tables, many headlines with descriptions, and many charts in the output. As much as you can.
+    Give structured output following JSON example below. You can add more tables and charts.
+    Every data type inside headline or table should be String, only charts can accept integer.
+    Provide at least 1 chart.
     {
       "mainTitle": "title - max 5 words",
       "mainShortDescription": "max 5 sentences page description",
@@ -42,6 +44,15 @@ class ChatGPTService {
             ["First Name", "John", "Jane"],
             ["Last Name", "Doe", "Smith"],
             ["Age", "30", "25"]
+          ]
+        }
+      ],
+      "charts": [
+        {
+          "headline": "Example Chart",
+          "data": [
+            {"label": "Category 1", "value": 10},
+            {"label": "Category 2", "value": 20}
           ]
         }
       ],
@@ -88,6 +99,12 @@ class ChatGPTService {
             .map((table) => {
                   'headline': table['headline'],
                   'columns': table['columns'],
+                })
+            .toList(),
+        'charts': (contentMap['charts'] as List)
+            .map((chart) => {
+                  'headline': chart['headline'],
+                  'data': chart['data'],
                 })
             .toList(),
         'headlinesWithDescriptions': contentMap.keys
