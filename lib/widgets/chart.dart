@@ -32,7 +32,7 @@ class ChartWidget extends StatelessWidget {
                       barRods: [
                         BarChartRodData(
                           toY: datum['value'].toDouble(),
-                          color: Colors.blue,
+                          color: Colors.white,
                         ),
                       ],
                     ),

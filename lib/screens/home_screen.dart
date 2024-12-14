@@ -60,6 +60,7 @@ class HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       if (isLoading) {
         debugPrint('Error fetching data: $e');
+        print(charts);
         setState(() {
           isLoading = false;
         });
