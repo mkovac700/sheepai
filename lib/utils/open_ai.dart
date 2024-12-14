@@ -31,7 +31,7 @@ class ChatGPTService {
     You can give many tables, many headlines with descriptions, and many charts in the output. As much as you can.
     Give structured output following JSON example below. You can add more tables and charts.
     Every data type inside headline or table should be String, only charts can accept integer.
-    Provide as much tables and charts as posssible, but make sure that chart data actually makes sense to display it as chart, same to table.
+    Provide as much tables and charts as posssible.
     Don't go out of the frame of provided JSON example.
     {
       "mainTitle": "title - max 5 words",
@@ -58,7 +58,7 @@ class ChatGPTService {
       ],
       "headlineWithDescription1": {
         "headline": "Example Headline",
-        "description": "This is an example description. 4-13 sentences."
+        "description": "This is an example description."
       }
     }
 
