@@ -22,7 +22,6 @@ class TableWidget extends StatelessWidget {
           style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        const SizedBox(height: 10),
         Table(
           border: TableBorder.all(color: Colors.black),
           children: [
