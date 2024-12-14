@@ -28,6 +28,12 @@ class HomeScreenState extends State<HomeScreen> {
   void fetchData(String url) async {
     setState(() {
       isLoading = true;
+      // Clear previous data
+      mainTitle = 'SheepAI Prototype Application';
+      mainShortDescription = 'Please provide URL to fetch data';
+      lastUpdated = '';
+      tables = [];
+      headlinesWithDescriptions = [];
     });
 
     try {
