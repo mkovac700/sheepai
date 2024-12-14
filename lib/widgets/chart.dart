@@ -16,13 +16,16 @@ class ChartWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          headline,
-          style: const TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Text(
+            headline,
+            style: const TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
         SizedBox(
-          height: 300,
+          height: 700, // Increased height from 300 to 400
           child: BarChart(
             BarChartData(
               barGroups: data
@@ -39,9 +42,20 @@ class ChartWidget extends StatelessWidget {
                   )
                   .toList(),
               titlesData: FlTitlesData(
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: false,
+                    getTitlesWidget: (double value, TitleMeta meta) {
+                      return Text(
+                        value.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      );
+                    },
+                  ),
+                ),
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
-                    showTitles: true,
+                    showTitles: false,
                     getTitlesWidget: (double value, TitleMeta meta) {
                       return Text(
                         value.toString(),

@@ -1,6 +1,5 @@
 import 'package:chatgpt_test/utils/open_ai.dart';
 import 'package:chatgpt_test/widgets/chart.dart';
-import 'package:chatgpt_test/widgets/text_widgets.dart';
 import 'package:chatgpt_test/widgets/title.dart';
 import 'package:flutter/material.dart';
 import '../widgets/table.dart';
@@ -39,41 +38,50 @@ class HomeScreenState extends State<HomeScreen> {
       headlinesWithDescriptions = [];
     });
 
-    try {
-      final data = await ChatGPTService()
-          .getResponse(url: url, language: selectedValue ?? 'English');
-      if (!isLoading) return; // Exit if loading was cancelled
+    int retryCount = 0;
+    const int maxRetries = 3;
+
+    while (retryCount < maxRetries) {
+      try {
+        final data = await ChatGPTService()
+            .getResponse(url: url, language: selectedValue ?? 'English');
+        if (!isLoading) return; // Exit if loading was cancelled
+        setState(() {
+          showImg = false;
+          mainTitle = data['mainTitle'];
+          mainShortDescription = data['mainShortDescription'];
+          lastUpdated = data['lastUpdated'];
+          tables = (data['tables'] as List)
+              .map((e) => Map<String, dynamic>.from(e))
+              .toList();
+          charts = (data['charts'] as List)
+              .map((e) => Map<String, dynamic>.from(e))
+              .toList();
+          headlinesWithDescriptions =
+              (data['headlinesWithDescriptions'] as List)
+                  .map((e) => Map<String, dynamic>.from(e))
+                  .toList();
+        });
+        break; // Exit the loop if the request is successful
+      } catch (e) {
+        retryCount++;
+        debugPrint('Error fetching data: $e. Retry $retryCount/$maxRetries');
+        if (retryCount >= maxRetries) {
+          if (isLoading) {
+            setState(() {
+              isLoading = false;
+            });
+            Navigator.of(context).pop(); // Dismiss the loading dialog
+          }
+        }
+      }
+    }
+
+    if (isLoading) {
       setState(() {
-        showImg = false;
-        mainTitle = data['mainTitle'];
-        mainShortDescription = data['mainShortDescription'];
-        lastUpdated = data['lastUpdated'];
-        tables = (data['tables'] as List)
-            .map((e) => Map<String, dynamic>.from(e))
-            .toList();
-        charts = (data['charts'] as List)
-            .map((e) => Map<String, dynamic>.from(e))
-            .toList();
-        headlinesWithDescriptions = (data['headlinesWithDescriptions'] as List)
-            .map((e) => Map<String, dynamic>.from(e))
-            .toList();
+        isLoading = false;
       });
-    } catch (e) {
-      if (isLoading) {
-        debugPrint('Error fetching data: $e');
-        print(charts);
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.of(context).pop(); // Dismiss the loading dialog
-      }
-    } finally {
-      if (isLoading) {
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.of(context).pop(); // Dismiss the loading dialog
-      }
+      Navigator.of(context).pop(); // Dismiss the loading dialog
     }
   }
 
@@ -257,32 +265,32 @@ class HomeScreenState extends State<HomeScreen> {
                     barrierDismissible: false,
                     builder: (BuildContext context) {
                       return Dialog(
-                          insetPadding: const EdgeInsets.symmetric(horizontal: 200),
-                          backgroundColor: Colors.black54,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const CircularProgressIndicator(),
-                                const SizedBox(width: 16),
-                                const Text('Loading...',
-                                    style: TextStyle(color: Colors.white)),
-                                const Spacer(),
-                                IconButton(
-                                  icon: const Icon(Icons.close,
-                                      color: Colors.white),
-                                  onPressed: () {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            ),
+                        insetPadding: const EdgeInsets.symmetric(
+                            horizontal: 800), // Adjusted width
+                        backgroundColor: Colors.black54,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const CircularProgressIndicator(),
+                              const SizedBox(width: 16),
+                              const Text('Loading...',
+                                  style: TextStyle(color: Colors.white)),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.close,
+                                    color: Colors.white),
+                                onPressed: () {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
                           ),
-
+                        ),
                       );
                     },
                   );
