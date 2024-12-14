@@ -28,6 +28,7 @@ class HomeScreenState extends State<HomeScreen> {
   void fetchData(String url) async {
     setState(() {
       isLoading = true;
+      showImg = true;
       // Clear previous data
       mainTitle = 'SheepAI Prototype Application';
       mainShortDescription = 'Please provide URL to fetch data';
@@ -221,9 +222,8 @@ class HomeScreenState extends State<HomeScreen> {
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 700.0),
-                        child: Dialog(
+                      return Dialog(
+                          insetPadding: const EdgeInsets.symmetric(horizontal: 200),
                           backgroundColor: Colors.black54,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -248,7 +248,7 @@ class HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                        ),
+
                       );
                     },
                   );
