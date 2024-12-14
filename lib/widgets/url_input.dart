@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/helper.dart';
 import '../utils/openAI.dart';
 
 class UrlInputField extends StatelessWidget {
@@ -21,7 +20,7 @@ class UrlInputField extends StatelessWidget {
         } catch (e) {
           print('Error: $e');
         }
-        launchURL(context, url);
+        // launchURL(context, url);
       },
     );
   }
