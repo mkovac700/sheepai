@@ -21,7 +21,6 @@ class ChatGPTService {
 
     final String chunk = articleContent.substring(
         0, articleContent.length > 100000 ? 100000 : articleContent.length);
-    print('chunk$chunk');
     final String prompt = """
     Your task is to process the following content and give output in JSON FORMAT, no explanations or additional content.
     Produce JSON format Strings that will be used to pass to widgets in Flutter. I have Table widget which accepts String headline and
@@ -59,12 +58,12 @@ class ChatGPTService {
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $apiKey',
+        "Content-Type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer $apiKey",
       },
       body: jsonEncode({
         "model": "gpt-4o-mini",
-        'messages': messages,
+        "messages": messages,
       }),
     );
 
