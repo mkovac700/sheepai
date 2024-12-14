@@ -34,9 +34,8 @@ class HomeScreenState extends State<HomeScreen> {
         mainTitle = data['mainTitle'];
         mainShortDescription = data['mainShortDescription'];
         lastUpdated = data['lastUpdated'];
-        tables = (data['tables'] as Map<String, dynamic>)
-            .values
-            .map((e) => e as Map<String, dynamic>)
+        tables = (data['tables'] as List)
+            .map((e) => Map<String, dynamic>.from(e))
             .toList();
       });
     } catch (e) {

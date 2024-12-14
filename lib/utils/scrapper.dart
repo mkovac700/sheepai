@@ -14,34 +14,18 @@ Future<String> scrapeWebContent(String url) async {
     body: jsonEncode({
       'url': url,
       'article': true,
-      'customAttributes': {
-        'mainTitle': {
-          'type': 'string',
-          'description': 'The title of the page',
-        },
-        'mainShortDescription': {
-          'type': 'string',
-          'description':
-              'A short description of the page, must differ from the mainTitle',
-        },
-        'lastUpdated': {
-          'type': 'string',
-          'description': 'The last updated time of the page',
-        },
-        'pageContent': {
-          'type': 'string',
-          'description': 'Whole content of the page',
-        },
-      }
     }),
   );
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    final extractedData = data['customAttributes'] ?? {};
-    // Correctly print mainTitle
-    return jsonEncode(extractedData);
+    final articleContent = data['article']['articleBody'] ?? '';
+    if (articleContent.isEmpty) {
+      print('Article content is empty. Response data: ${response.body}');
+    }
+    return jsonEncode({'content': articleContent});
   } else {
+    print('Failed to load web content: ${response.body}');
     throw Exception('Failed to load web content: ${response.body}');
   }
 }
