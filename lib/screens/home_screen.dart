@@ -22,6 +22,8 @@ class HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> tables = [];
   String? selectedValue = 'English';
   List<Map<String, dynamic>> headlinesWithDescriptions = [];
+  String imgUrl = 'https://i.ibb.co/1n0gWx0/Screenshot-3-edited.png';
+  bool showImg = true;
 
   void fetchData(String url) async {
     setState(() {
@@ -33,6 +35,7 @@ class HomeScreenState extends State<HomeScreen> {
           .getResponse(url: url, language: selectedValue ?? 'English');
       if (!isLoading) return; // Exit if loading was cancelled
       setState(() {
+        showImg = false;
         mainTitle = data['mainTitle'];
         mainShortDescription = data['mainShortDescription'];
         lastUpdated = data['lastUpdated'];
@@ -137,6 +140,8 @@ class HomeScreenState extends State<HomeScreen> {
               children: [
                 const SizedBox(height: 20),
                 TitleWidget(
+                  showImg: showImg,
+                  imgUrl: imgUrl,
                   mainTitle: mainTitle,
                   lastUpdate: lastUpdated,
                   mainShortDescription: mainShortDescription,
@@ -210,29 +215,32 @@ class HomeScreenState extends State<HomeScreen> {
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
-                      return Dialog(
-                        backgroundColor: Colors.black54,
-                        child: Padding(
-                          padding: const EdgeInsets.all(56.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const CircularProgressIndicator(),
-                              const SizedBox(width: 16),
-                              const Text('Loading...',
-                                  style: TextStyle(color: Colors.white)),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(Icons.close,
-                                    color: Colors.white),
-                                onPressed: () {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 700.0),
+                        child: Dialog(
+                          backgroundColor: Colors.black54,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const CircularProgressIndicator(),
+                                const SizedBox(width: 16),
+                                const Text('Loading...',
+                                    style: TextStyle(color: Colors.white)),
+                                const Spacer(),
+                                IconButton(
+                                  icon: const Icon(Icons.close,
+                                      color: Colors.white),
+                                  onPressed: () {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
