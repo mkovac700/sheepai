@@ -16,11 +16,11 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   String mainTitle = '';
-  String mainShortDescription = '';
+  String mainShortDescription = 'Enter URL';
   String lastUpdated = '';
   bool isLoading = false;
   List<Map<String, dynamic>> tables = [];
-  String? selectedValue;
+  String? selectedValue = 'English';
   List<Map<String, dynamic>> headlinesWithDescriptions = [];
 
   void fetchData(String url) async {
@@ -65,26 +65,63 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
-          onTap: () => launchURL(
-              context, 'https://www.sheepai.app/'), // Navigate to URL on tap
-          child: const Row(
-            children: [
-              Text(
-                'Sheep',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold, // Make the text bolder
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: GestureDetector(
+            onTap: () => launchURL(context, 'https://www.sheepai.app/'),
+            // Navigate to URL on tap
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Sheep',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold, // Make the text bolder
+                  ),
                 ),
-              ),
-              Text(
-                'AI_',
-                style: TextStyle(
-                  color: Color(0xFF00FF00), // More fluorescent green color
-                  fontWeight: FontWeight.bold, // Make the text bolder
+                const Text(
+                  'AI_',
+                  style: TextStyle(
+                    color: Color(0xFF00FF00), // More fluorescent green color
+                    fontWeight: FontWeight.bold, // Make the text bolder
+                  ),
                 ),
-              ),
-            ],
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: UrlInputField(onSubmitted: fetchData),
+                ),),
+                DropdownButton<String>(
+                  value: selectedValue,
+                  hint: const Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.0), // Apply left padding to the hint text
+                    child: Text('English'),
+                  ),
+                  items: <String>['English', 'Croatian'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedValue = newValue;
+                    });
+                  },
+                  style: const TextStyle(
+                    color: Colors.blue, // Change text color
+                    fontSize: 16, // Change font size
+                  ),
+                  dropdownColor: Colors.grey[200],
+                  // Change dropdown background color
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.blue, // Change icon color
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         backgroundColor: Colors.grey[900], // Dark grey color
@@ -96,54 +133,6 @@ class HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                UrlInputField(onSubmitted: fetchData),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0,
-                      bottom:
-                          8.0), // Apply padding around the DropdownButtonFormField
-                  child: DropdownButtonFormField<String>(
-                    value: selectedValue,
-                    hint: const Padding(
-                      padding: EdgeInsets.only(
-                          left: 8.0), // Apply left padding to the hint text
-                      child: Text('Select language'),
-                    ),
-                    items: <String>['English', 'Croatian'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedValue = newValue;
-                      });
-                    },
-                    style: const TextStyle(
-                      color: Colors.blue, // Change text color
-                      fontSize: 16, // Change font size
-                    ),
-                    dropdownColor:
-                        Colors.grey[200], // Change dropdown background color
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                          left: 8.0), // Apply left padding to the content
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.transparent), // Remove underline
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.transparent), // Remove underline
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.blue, // Change icon color
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 20),
                 TitleWidget(
                   mainTitle: mainTitle,
