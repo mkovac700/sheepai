@@ -1,4 +1,5 @@
 import 'package:chatgpt_test/utils/open_ai.dart';
+import 'package:chatgpt_test/widgets/chart.dart';
 import 'package:chatgpt_test/widgets/text_widgets.dart';
 import 'package:chatgpt_test/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> headlinesWithDescriptions = [];
   String imgUrl = 'https://i.ibb.co/1n0gWx0/Screenshot-3-edited.png';
   bool showImg = true;
+  List<Map<String, dynamic>> charts = [];
 
   void fetchData(String url) async {
     setState(() {
@@ -46,6 +48,9 @@ class HomeScreenState extends State<HomeScreen> {
         mainShortDescription = data['mainShortDescription'];
         lastUpdated = data['lastUpdated'];
         tables = (data['tables'] as List)
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+        charts = (data['charts'] as List)
             .map((e) => Map<String, dynamic>.from(e))
             .toList();
         headlinesWithDescriptions = (data['headlinesWithDescriptions'] as List)
@@ -197,6 +202,34 @@ class HomeScreenState extends State<HomeScreen> {
                                   ['description'],
                             ),
                           ),
+                      ],
+                      for (var i = 0; i < charts.length; i++) ...[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[800],
+                              borderRadius: BorderRadius.circular(12.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ChartWidget(
+                              headline: charts[i]['headline'] ?? 'No Headline',
+                              data: (charts[i]['data'] as List)
+                                  .map(
+                                      (data) => Map<String, dynamic>.from(data))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
                       ],
                       /*const SizedBox(height: 20),
                       const HeadlineText(text: 'Welcome to SheepAI'),
