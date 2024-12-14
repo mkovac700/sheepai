@@ -25,7 +25,25 @@ class TableWidget extends StatelessWidget {
         Table(
           border: TableBorder.all(color: Colors.black),
           children: [
-            for (int i = 1; i < column1.length; i++)
+            TableRow(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(column1[0],
+                      style: const TextStyle(color: Colors.black)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(column2[0],
+                      style: const TextStyle(color: Colors.black)),
+                ),
+              ],
+            ),
+            for (int i = 1; i < column1.length - 1; i++)
               TableRow(
                 decoration: const BoxDecoration(color: Colors.white),
                 children: [
@@ -41,6 +59,25 @@ class TableWidget extends StatelessWidget {
                   ),
                 ],
               ),
+            TableRow(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(10)),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(column1[column1.length - 1],
+                      style: const TextStyle(color: Colors.black)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(column2[column2.length - 1],
+                      style: const TextStyle(color: Colors.black)),
+                ),
+              ],
+            ),
           ],
         ),
       ],
