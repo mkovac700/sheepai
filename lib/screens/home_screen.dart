@@ -5,7 +5,7 @@ import '../widgets/table.dart';
 import '../widgets/headline_with_description.dart';
 import '../data/dummy_text.dart';
 import '../utils/helper.dart';
-import '../widgets/url_input.dart'; // Add this import
+import '../widgets/url_input.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

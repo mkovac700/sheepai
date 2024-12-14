@@ -60,4 +60,8 @@ class ChatGPTService {
       throw Exception('Failed to load response${response.body}');
     }
   }
+
+  Future<Map<String, dynamic>> getResponseFromInputField(String url) async {
+    return await getResponse(url);
+  }
 }
