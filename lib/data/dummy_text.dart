@@ -8,4 +8,4 @@ const List<String> column2 = ['Canadian Revenue Agency', 'Another agency'];
 const String detailsTitle = 'Details';
 const String detailsText =
     'The CRA is responsible for the administration of tax laws for the Government of Canada and for most provinces and territories.';
-const String lastUpdated = 'Last updated: October 2023';
+const String lastUpdated = ''; // Leave blank if not available

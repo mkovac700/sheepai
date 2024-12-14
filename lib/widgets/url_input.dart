@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/helper.dart';
+import '../utils/openAI.dart';
 
 class UrlInputField extends StatelessWidget {
   const UrlInputField({super.key});
@@ -11,7 +12,15 @@ class UrlInputField extends StatelessWidget {
         labelText: 'Enter URL',
         border: OutlineInputBorder(),
       ),
-      onSubmitted: (url) {
+      onSubmitted: (url) async {
+        final chatGPTService = ChatGPTService();
+        try {
+          final response = await chatGPTService.getResponse(url);
+          // Handle the response as needed
+          print(response);
+        } catch (e) {
+          print('Error: $e');
+        }
         launchURL(context, url);
       },
     );
