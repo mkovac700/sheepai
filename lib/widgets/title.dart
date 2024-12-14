@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class TitleWidget extends StatelessWidget {
-  final String mainHeadline;
+  final String mainTitle;
   final String lastUpdate;
-  final String shortDescription;
+  final String mainShortDescription;
 
   const TitleWidget({
     super.key,
-    required this.mainHeadline,
+    required this.mainTitle,
     required this.lastUpdate,
-    required this.shortDescription,
+    required this.mainShortDescription,
   });
 
   @override
@@ -30,7 +30,7 @@ class TitleWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            mainHeadline,
+            mainTitle,
             style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -39,7 +39,7 @@ class TitleWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            shortDescription,
+            mainShortDescription,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,

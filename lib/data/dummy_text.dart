@@ -1,4 +1,4 @@
-const String headline = 'Canada E-Invoicing and Digital Reporting';
+const String mainTitle = 'Canada E-Invoicing and Digital Reporting';
 const String overviewTitle = 'Overview';
 const String overviewText =
     'Canada has implemented various measures for e-invoicing and digital reporting. The Canadian Revenue Agency (CRA) oversees these regulations.';

@@ -1,3 +1,4 @@
+import 'package:chatgpt_test/utils/openAI.dart';
 import 'package:chatgpt_test/widgets/text_widgets.dart';
 import 'package:chatgpt_test/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,30 @@ import '../data/dummy_text.dart';
 import '../utils/helper.dart';
 import '../widgets/url_input.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  HomeScreenState createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
+  String mainTitle = '';
+  String mainShortDescription = '';
+  String lastUpdated = '';
+
+  void fetchData(String url) async {
+    try {
+      final data = await ChatGPTService().getResponse(url);
+      setState(() {
+        mainTitle = data['mainTitle'];
+        mainShortDescription = data['mainShortDescription'];
+        lastUpdated = data['lastUpdated'];
+      });
+    } catch (e) {
+      debugPrint('Error fetching data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +66,12 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const UrlInputField(),
+            UrlInputField(onSubmitted: fetchData),
             const SizedBox(height: 20),
-            const TitleWidget(
-              mainHeadline: headline,
+            TitleWidget(
+              mainTitle: mainTitle,
               lastUpdate: lastUpdated,
-              shortDescription: overviewText,
+              mainShortDescription: mainShortDescription,
             ),
             const SizedBox(height: 20),
             Padding(
@@ -56,10 +79,10 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: double.infinity, // Make the width equal
                     child: HeadlineWithDescription(
-                      headline: headline,
+                      mainHeadline: mainTitle,
                       description: overviewText,
                     ),
                   ),
@@ -90,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(
                     width: double.infinity, // Make the width equal
                     child: HeadlineWithDescription(
-                      headline: detailsTitle,
+                      mainHeadline: detailsTitle,
                       description: detailsText,
                     ),
                   ),

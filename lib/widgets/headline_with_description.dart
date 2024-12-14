@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class HeadlineWithDescription extends StatelessWidget {
-  final String headline;
+  final String mainHeadline;
   final String description;
 
   const HeadlineWithDescription({
     super.key,
-    required this.headline,
+    required this.mainHeadline,
     required this.description,
   });
 
@@ -30,7 +30,7 @@ class HeadlineWithDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            headline,
+            mainHeadline,
             style: const TextStyle(
                 fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
           ),

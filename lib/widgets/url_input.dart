@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../utils/helper.dart';
 
 class UrlInputField extends StatelessWidget {
-  const UrlInputField({super.key});
+  final Function(String) onSubmitted;
+
+  const UrlInputField({super.key, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +12,7 @@ class UrlInputField extends StatelessWidget {
         labelText: 'Enter URL',
         border: OutlineInputBorder(),
       ),
-      onSubmitted: (url) {
-        launchURL(context, url);
-      },
+      onSubmitted: onSubmitted,
     );
   }
 }
